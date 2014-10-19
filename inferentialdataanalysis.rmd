@@ -1,0 +1,64 @@
+---
+title: "Basic Inferential Data Analysis of the Tooth Growth Dataset"
+output: 
+  html_document:
+    keep_md: true
+---
+
+In this peer assignment, we are required to perform some exploratory data analysis and perform some Student's t-tests to see if mean differs when conditioned with different variables.
+
+Firstly, let us look at the Tooth Growth dataset.
+As provided by the description of the dataset: "the response is the length of odontoblasts (teeth) in each of 10 guinea pigs at each of three dose levels of Vitamin C (0.5, 1, and 2 mg) with each of two delivery methods (orange juice or ascorbic acid)."
+
+```{r}
+library(ggplot2)
+
+data(ToothGrowth)
+attach(ToothGrowth)
+
+table(list(supp,dose))
+```
+
+Indeed, the dataset has 10 values for each combination of combination of categorical variables, supplement type and dose.
+
+Exploratory data analysis is done by plotting histograms of the measured value at the gross level, as well as separated by the 2 categorical variables.
+
+```{r}
+g1 <- ggplot(ToothGrowth)
+g1 + geom_histogram(aes(x=len), binwidth=2)
+g1 + geom_histogram(aes(x=len, fill=supp), binwidth=2) + facet_grid(supp~.)
+g1 + geom_histogram(aes(x=len, fill=factor(dose)), binwidth=2) + facet_grid(dose~.)
+g1 + geom_histogram(aes(x=len, fill=factor(dose)), binwidth=2) + facet_grid(dose~supp)
+
+```
+
+The gross histogram plot does not give much information about length of odontoblasts, it is quite varied.
+When conditioned on the supplement type, the histogram does not show much difference in the mean of length, but the variance for ascorbic acid is higher.
+When conditioned on dosage level, there are observable differences in the mean of length at different dosage levels.
+In the final grid plot, where length is conditioned on both variables, dosage levels also showed clear difference in means, and the spread is wider for ascorbic acid.
+
+The following results quantify these differences, when mean is computed while conditioned on the categories:
+```{r}
+aggregate(len ~ supp, data=ToothGrowth, mean)
+aggregate(len ~ dose, data=ToothGrowth, mean)
+aggregate(len ~ dose + supp, data=ToothGrowth, mean)
+```
+
+T-tests were perform on each of these variables to investigate if there are statistical difference in means between the datasets.
+Since there are 3 levels for dosage, it is necessary to subset the data to include just 2 of the categories before performing the t-tests.
+```{r}
+tg0.51 <- subset(ToothGrowth, dose!=2)
+tg0.52 <- subset(ToothGrowth, dose!=1)
+tg12 <- subset(ToothGrowth, dose!=0.5)
+
+t.test(len ~ supp, data=ToothGrowth)
+t.test(len ~ dose, data=tg0.51)
+t.test(len ~ dose, data=tg0.52)
+t.test(len ~ dose, data=tg12)
+```
+
+Based on the tests result, we can conclude that supplement type does not show significant difference in length of teeth. On the other hand, dosage levels showed significant differences when comparing between any 2 sets of dosage levels. Increase in dosage level leads to an increase in length of teeth.
+
+There are some assumptions we had to make for the conclusion to be generalised. Firstly, we are assuming that the experiment is performed fairly, and the data collected from it is representative of the population of guinea pigs. 
+
+Since the data set is small , it is necessary that we assumed that the population of teeth length is a normal distribution before we can perform t-tests. Else, an exact test (or other forms of tests) would be necessary. We made no assumptions on whether the different categories have similar variances and the t-tests have accounted for possible differences.
