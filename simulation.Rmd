@@ -9,6 +9,7 @@ For this peer assignment, we are required to perform a simulation exercise for t
 ```{r}
 #importing the necessary libraries
 library(ggplot2)
+library(Cairo)
 
 lambda <- 0.2
 nsim <- 100000 
@@ -34,7 +35,7 @@ normdist <- dnorm(expmean$Mean40, mean=theo.mean, sd=sqrt(theo.var))
 ```
 
 And plot everything together here:
-```{r, warning=FALSE}
+```{r, warning=FALSE, dev='CairoPNG'}
 quantiles <- quantile(expmean$Mean40,c(0.05,0.95))
 g1 <- ggplot(expmean, aes(x=Mean40))
 g1 + geom_histogram(aes(y=..density.., fill=..density..), binwidth=0.1, 

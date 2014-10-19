@@ -5,6 +5,7 @@ For this peer assignment, we are required to perform a simulation exercise for t
 ```r
 #importing the necessary libraries
 library(ggplot2)
+library(Cairo)
 
 lambda <- 0.2
 nsim <- 100000 
@@ -23,7 +24,7 @@ sample.mean <- colMeans(expmean)
 sample.var <- var(expmean$Mean40)
 ```
 
-The sample mean is 4.9989 with variance 0.6268. We know that the theoretical mean of an exponential distribution is 1/lambda = 5, and the variance is 0.625.
+The sample mean is 4.9955 with variance 0.6214. We know that the theoretical mean of an exponential distribution is 1/lambda = 5, and the variance is 0.625.
 
 We then generate the theoretical normal distribution based on these properties to be included into the final empirical plot.
 
@@ -65,4 +66,4 @@ Computing the 95% CI:
 CI <- theo.mean + c(-1,1)*1.96*sqrt(sample.var/40)
 CI <- data.frame(Lower=CI[1],Upper=CI[2])
 ```
-The 95% CI of 4.7547, 5.2453 includes the theoretical mean.
+The 95% CI of 4.7557, 5.2443 includes the theoretical mean.
