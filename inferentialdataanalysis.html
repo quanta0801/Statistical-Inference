@@ -58,6 +58,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <p>In this peer assignment, we are required to perform some exploratory data analysis and perform some Student’s t-tests to see if mean differs when conditioned with different variables.</p>
 <p>Firstly, let us look at the Tooth Growth dataset. As provided by the description of the dataset: “the response is the length of odontoblasts (teeth) in each of 10 guinea pigs at each of three dose levels of Vitamin C (0.5, 1, and 2 mg) with each of two delivery methods (orange juice or ascorbic acid).”</p>
 <pre class="r"><code>library(ggplot2)
+library(Cairo)
 
 data(ToothGrowth)
 attach(ToothGrowth)

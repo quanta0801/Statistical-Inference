@@ -8,6 +8,7 @@ As provided by the description of the dataset: "the response is the length of od
 
 ```r
 library(ggplot2)
+library(Cairo)
 
 data(ToothGrowth)
 attach(ToothGrowth)
